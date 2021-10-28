@@ -2,27 +2,46 @@ import { StyleSheet } from 'react-native'
 
 const Styles = StyleSheet.create({
     Container: {
-
     },
     Container2: {
         padding: 15,
         paddingTop: 25,
         backgroundColor: "#fafafa",
+        borderWidth:1,
+        borderColor:"grey",
+        backgroundColor:"#F6F6F6"
     },
     TI: {
         borderWidth: 0.5,
         width: "80%",
         alignSelf: "center",
-        marginTop: 10,
+        
         borderRadius: 8,
         height: 42,
+        
     },
     HeaderTitle: {
         fontSize: 20,
-        fontWeight: "bold",
+        fontWeight: "400",
         textAlign: "center",
         marginBottom:15,
+        color:"black",
     },
+    line:{
+        height:.1,
+        width:"100%",
+        borderWidth:1,
+        marginBottom:10,
+    }, 
+    TItext:{
+        width:"80%",
+        alignSelf:"center",
+        marginTop:12,
+        marginBottom:5,
+        fontSize:13,
+        fontWeight:"300",
+        color:"black"
+    }, 
     buton :{
         padding:10,
         backgroundColor:"#F44",
