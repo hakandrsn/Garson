@@ -53,6 +53,12 @@ const Styles = StyleSheet.create({
         fontSize:15,
         alignSelf:"center",
         fontWeight:"800"
+    },
+    formikTxt:{
+        fontSize:11,
+        alignSelf:"center",
+        color:"#f44",
+        marginTop:2
     }
 })
 export default Styles;

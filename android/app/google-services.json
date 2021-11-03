@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "682715941249",
+    "project_id": "garson-acc5c",
+    "storage_bucket": "garson-acc5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:682715941249:android:ab3986c5ca552d45cf0080",
+        "android_client_info": {
+          "package_name": "com.garson"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "682715941249-muabpdk0kgkfpvsgfr4e2nvl96c0onj9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.garson",
+            "certificate_hash": "2890c0f1d64dc736d98426c027d55ca91c20c523"
+          }
+        },
+        {
+          "client_id": "682715941249-2h56gqabaul05m80cdkilk5toq79ocu9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9gSeUU8KqCEa4SSM1kiX0gh-9NlMH50w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "682715941249-2h56gqabaul05m80cdkilk5toq79ocu9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
