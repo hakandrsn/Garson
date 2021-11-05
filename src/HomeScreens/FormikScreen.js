@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { TextInput, View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { TextInput, View, Text, TouchableOpacity, SafeAreaView, ScrollView, Modal, Image } from 'react-native';
 import { Formik } from 'formik';
 import Styles from '../Styles/FormikStyles';
 import { CheckBox } from 'react-native-elements'
 import firestore from "@react-native-firebase/firestore"
 import *as yup from "yup"
-import { date } from 'yup/lib/locale';
+import Kvkk from '../Components/kvkk'
 
 const FormikScreen = () => {
     const [name1, setName] = useState("")
@@ -20,12 +20,39 @@ const FormikScreen = () => {
     const [age1, setAge] = useState("")
     const [TC1, setTC] = useState("")
 
+    const [kvkk, setkvkk] = useState(false)
+    const [bcolor, setBcolor] = useState("")
+    const [isTrueColor, setIsTrueColor] = useState(false)
+
     let year = new Date().getFullYear()
 
-    const collFirestore = firestore().collection("Customer")
+
+
+
+    const  collFirestore =  firestore().collection("Customer");
+    let stateControl = 0
+    let checkIsRepeatPerson = function async () {
+      collFirestore.onSnapshot(element => {
+            element.forEach(data => {
+                if (data.data().Phone == phone1) {
+                    stateControl++;
+
+                }
+            });
+        })
+        if (stateControl >= 1) {
+            alert("Numaranız sistemde hayıtlıdır lütfen farklı bir numarayla deneyiniz.")
+
+        } else {
+            getCustomer()
+           // stateControl = 0
+        }
+    }
+
+
     let getCustomer = function () {
 
-        if (name1 !== "" && surname1 !== "" && phone1 !== "" && gender1 !== "" && birthdate1 !== "") {
+        if (name1 !== "" && surname1 !== "" && phone1 !== "" && gender1 !== "") {
 
             collFirestore.doc(phone1).set({
                 Name: name1,
@@ -38,11 +65,14 @@ const FormikScreen = () => {
                 WorkDay: workDay1,
                 WorkTime: workTime1,
                 TC: TC1,
-                Age : age1
+                Age: age1
+
             })
             alert("Başvurunuz alındı en kısa zamanda iletişime geçilecektir.")
+
         } else {
             alert("Lütfen bilgilerinizi doldurunuz.")
+
         }
 
     }
@@ -52,9 +82,15 @@ const FormikScreen = () => {
             name: yup.string().required("Lütfen isminizi giriniz."),
             surname: yup.string().required("Lütfen soyadınızı giriniz."),
             email: yup.string().email("Email adresini doğru giriniz."),
-            phone: yup.string().min(10, "Kontrol ediniz.").max(11, "Kontrol ediniz."),
-            gender: yup.string().min(1).max(1).required("Lütfen cinsiyetinizi belirtiniz."),
-            birthdate: yup.string().min(4, "dört haneli olarak doğum yılınızı giriniz.").max(4, "dört haneli olarak doğum yılınızı giriniz."),
+            phone: yup.string()
+                .min(10, "Kontrol ediniz.")
+                .max(11, "Kontrol ediniz.")
+                .required("Telefon numaranızı giriniz"),
+            gender: yup.string().min(1).max(6).required("Lütfen cinsiyetinizi belirtiniz."),
+            birthdate: yup.string()
+                .min(4, "dört haneli olarak doğum yılınızı giriniz.")
+                .max(4, "dört haneli olarak doğum yılınızı giriniz.")
+                .required("Doğum yılınızı giriniz"),
             location: yup.string(),
             workDay: yup.string(),
             workTime: yup.string(),
@@ -99,9 +135,13 @@ const FormikScreen = () => {
                 >
                     {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                         <View style={Styles.Container2}>
-                            <Text style={Styles.HeaderTitle} >
-                                Günlük işler için doldurun ve sizi arayalım
-                            </Text>
+                            <View style={{ flexDirection: "row" }}>
+                                <Image source={require("../Images/waiter.png")}
+                                    style={{ width: 50, height: 50 }} />
+                                <Text style={Styles.HeaderTitle} >
+                                    Günlük işler için doldurun ve sizi arayalım
+                                </Text>
+                            </View>
                             <View style={Styles.line} ></View>
                             <Text style={Styles.TItext}>Adınız*</Text>
                             <TextInput
@@ -206,16 +246,53 @@ const FormikScreen = () => {
                             />
                             {errors.workTime && (<Text style={Styles.formikTxt}> {errors.workTime} </Text>)}
 
+                            <View style={{ backgroundColor: "#f44" }}>
+                                <Modal
+                                    visible={kvkk}
+                                >
+                                    <Kvkk />
+                                    <TouchableOpacity
+                                        onPress={() => setkvkk(!kvkk)}
+                                        style={Styles.modalCloseStyle}>
+                                        <Text style={Styles.modalTextStyle}>Kapat</Text>
+                                    </TouchableOpacity>
+                                </Modal>
+
+                            </View>
+
+                            <View style={{ flexDirection: "row", justifyContent: "center", paddingTop: 10 }}>
+                                <TouchableOpacity
+                                    style={{
+                                        width: 15, height: 15,
+                                        backgroundColor: (isTrueColor ? "red" : "#fff"),
+                                        borderRadius: 50, marginHorizontal: 15,
+                                        borderWidth: 1.5,
+                                    }}
+                                    onPress={() => setIsTrueColor(!isTrueColor)}
+                                />
+                                <TouchableOpacity
+                                    onPress={() => setkvkk(!kvkk)}
+                                >
+                                    <Text style={{ color: "blue", opacity: 0.6 }}>
+                                        Kvkk bilgilendirme metnini aç.
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
                             <TouchableOpacity
+
+                                disabled={!isTrueColor}
                                 style={Styles.buton}
                                 onPress={handleSubmit}
-                                onPressOut={() => getCustomer()}
+                                delayPressOut="2000"
+                                onPressOut={() => checkIsRepeatPerson()}
                             >
                                 <Text style={Styles.TouchTxt}>Gönder</Text>
                             </TouchableOpacity>
                         </View>
                     )}
                 </Formik>
+                <Text style={{ fontSize: 12, alignSelf: "center" }}> Powered By Heyy Apps for As Kadro</Text>
             </ScrollView>
         </SafeAreaView>
     )
